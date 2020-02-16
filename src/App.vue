@@ -1,28 +1,98 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar class="panda">
+        <q-btn
+          flat
+          dense
+          round
+          @click="leftDrawerOpen = !leftDrawerOpen"
+          aria-label="Menu"
+          icon="ion-menu"
+        />
+        <q-toolbar-title>Woody</q-toolbar-title>
+
+        <q-icon name="ion-logo-github" size="32px"></q-icon>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-2">
+      <Releases :data="releases" />
+    </q-drawer>
+
+    <q-page-container>
+      <Deployments :data="deployments" />
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Releases from './components/Releases.vue'
+import Deployments from './components/Deployments.vue'
 
 export default {
-  name: 'App',
+  name: 'LayoutDefault',
+
   components: {
-    HelloWorld
+    Deployments,
+    Releases
+  },
+
+  methods: {
+    initReleases() {
+      fetch(`${process.env.VUE_APP_WOODPECKER}/wood`, {
+        method: 'POST'
+      })
+        .then(res => res.json())
+        .then(res => {
+          this.releases = res
+        })
+    },
+    fetchDeployments() {
+      fetch(`${process.env.VUE_APP_WOODPECKER}/peck`, {
+        method: 'POST'
+      })
+        .then(res => res.json())
+        .then(res => {
+          this.deployments = res
+        })
+    }
+  },
+
+  data() {
+    return {
+      leftDrawerOpen: false,
+      fetching: null,
+      interval: 1000,
+      deployments: [],
+      releases: []
+    }
+  },
+
+  created() {
+    this.fetchDeployments()
+    this.initReleases()
+
+    this.fetching = setInterval(() => {
+      this.fetchDeployments()
+    }, this.interval)
+  },
+
+  beforeDestroy() {
+    clearInterval(this.fetching)
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Montserrat+Alternates&display=swap');
+*,
+body,
+html {
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 700;
+}
+.panda {
+  background-color: #d70f64;
 }
 </style>
