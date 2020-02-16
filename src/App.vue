@@ -12,7 +12,14 @@
         />
         <q-toolbar-title>Woody</q-toolbar-title>
 
-        <q-icon name="ion-logo-github" size="32px"></q-icon>
+        <a
+          class="github"
+          href="https://github.com/pheeria/woody"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <q-icon name="ion-logo-github" size="32px"></q-icon>
+        </a>
       </q-toolbar>
     </q-header>
 
@@ -94,5 +101,14 @@ html {
 }
 .panda {
   background-color: #d70f64;
+}
+.github {
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: white;
+    text-decoration: none;
+  }
 }
 </style>
