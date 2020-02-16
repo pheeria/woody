@@ -50,7 +50,7 @@ export default {
 .my-sticky-header-table {
   /* height or max-height is important */
   height: 85vh;
-  width: 90vw;
+  width: 75vw;
 
   .q-table__top,
   .q-table__bottom,
