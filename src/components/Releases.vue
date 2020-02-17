@@ -1,6 +1,6 @@
 <template>
   <q-list>
-    <q-item-label header>Last Deployments</q-item-label>
+    <q-item-label header>Latest Releases</q-item-label>
 
     <q-item v-for="release in data" :key="release.tag" clickable v-ripple>
       <q-item-section side>
